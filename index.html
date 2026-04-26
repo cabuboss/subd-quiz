@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Тест по СУБД (MS SQL Server)</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 20px;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+h1 {
+  font-size: 28px;
+  color: #60a5fa;
+  margin-bottom: 8px;
+}
+.subtitle {
+  color: #94a3b8;
+  font-size: 14px;
+}
+.start-screen, .result-screen {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  border: 1px solid #334155;
+}
+.start-screen h2, .result-screen h2 {
+  color: #60a5fa;
+  margin-bottom: 20px;
+}
+.start-screen p, .result-screen p {
+  color: #cbd5e1;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px 6px;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59,130,246,0.3); }
+.btn-secondary { background: linear-gradient(135deg, #64748b, #475569); }
+.progress-bar {
+  background: #334155;
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  height: 100%;
+  transition: width 0.3s;
+}
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+.stats .correct { color: #22c55e; }
+.stats .wrong { color: #ef4444; }
+.question-card {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid #334155;
+}
+.topic-badge {
+  display: inline-block;
+  background: #1e40af;
+  color: #dbeafe;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+.question-text {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  color: #f1f5f9;
+}
+.code-block {
+  background: #0f172a;
+  border-left: 4px solid #3b82f6;
+  padding: 14px;
+  margin: 14px 0;
+  border-radius: 6px;
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  font-size: 14px;
+  color: #93c5fd;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.option {
+  background: #0f172a;
+  border: 2px solid #334155;
+  padding: 14px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  color: #e2e8f0;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.option:hover:not(:disabled) {
+  border-color: #60a5fa;
+  background: #1e3a5f;
+}
+.option:disabled { cursor: default; }
+.option .letter {
+  background: #334155;
+  color: #cbd5e1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.option.correct {
+  background: rgba(34,197,94,0.15);
+  border-color: #22c55e;
+  color: #bbf7d0;
+}
+.option.correct .letter { background: #22c55e; color: white; }
+.option.wrong {
+  background: rgba(239,68,68,0.15);
+  border-color: #ef4444;
+  color: #fecaca;
+}
+.option.wrong .letter { background: #ef4444; color: white; }
+.feedback {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct {
+  background: rgba(34,197,94,0.1);
+  border-left: 4px solid #22c55e;
+  color: #bbf7d0;
+}
+.feedback.wrong {
+  background: rgba(239,68,68,0.1);
+  border-left: 4px solid #ef4444;
+  color: #fecaca;
+}
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  gap: 12px;
+}
+.score-display {
+  font-size: 48px;
+  font-weight: 700;
+  color: #60a5fa;
+  margin: 20px 0;
+}
+.percentage {
+  font-size: 24px;
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+.hidden { display: none; }
+@media (max-width: 600px) {
+  body { padding: 12px; }
+  h1 { font-size: 22px; }
+  .subtitle { font-size: 12px; }
+  .start-screen, .result-screen { padding: 24px 16px; }
+  .question-card { padding: 18px 14px; border-radius: 12px; }
+  .question-text { font-size: 16px; line-height: 1.5; }
+  .option {
+    font-size: 15px;
+    padding: 14px 12px;
+    min-height: 52px;
+  }
+  .option .letter {
+    width: 32px; height: 32px;
+    font-size: 14px;
+  }
+  .code-block {
+    font-size: 12px;
+    padding: 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .stats {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+  .nav-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .nav-buttons .btn {
+    flex: 1 1 auto;
+    min-width: 100px;
+    padding: 12px 14px;
+    font-size: 14px;
+    margin: 0;
+  }
+  .btn { padding: 12px 20px; font-size: 15px; }
+  .topic-badge { font-size: 11px; }
+  .score-display { font-size: 40px; }
+  .percentage { font-size: 18px; }
+  .feedback { font-size: 13px; padding: 12px; }
+}
+@media (max-width: 380px) {
+  .question-text { font-size: 15px; }
+  .option { font-size: 14px; }
+}
+/* Тапабельные элементы — отключим выделение текста при тапе на кнопках */
+.option, .btn { -webkit-tap-highlight-color: transparent; user-select: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Тест по СУБД</h1>
+    <div class="subtitle">MS SQL Server &mdash; лабораторные 1-14</div>
+  </header>
+
+  <div id="start-screen" class="start-screen">
+    <h2>Подготовка к тесту</h2>
+    <p>В тесте <strong>153 вопрос</strong> по 14 темам:</p>
+    <p style="text-align:left; max-width:500px; margin:20px auto; color:#94a3b8; font-size:14px;">
+      1. Знакомство с SQL Server &middot; 2. SELECT &middot; 3. Фильтрация (WHERE) &middot; 4. Типы данных и функции &middot; 5. Агрегатные функции &middot; 6. JOIN &middot; 7. UNION/EXCEPT/INTERSECT &middot; 8. Подзапросы &middot; 9. DDL &middot; 10. DML &middot; 11. Программирование T-SQL &middot; 12. Пользовательские функции &middot; 13. Хранимые процедуры &middot; 14. Триггеры
+    </p>
+    <p>Без таймера. Подсветка верных и неверных ответов.</p>
+    <button class="btn" onclick="startQuiz(false)">Начать по порядку</button>
+    <button class="btn btn-secondary" onclick="startQuiz(true)">Начать вперемешку</button>
+  </div>
+
+  <div id="quiz-screen" class="hidden">
+    <div class="stats">
+      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">153</span></span>
+      <span><span class="correct">Верно: <span id="correct-count">0</span></span> &middot; <span class="wrong">Ошибок: <span id="wrong-count">0</span></span></span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress" style="width:0%"></div>
+    </div>
+    <div class="question-card">
+      <div class="topic-badge" id="topic-badge"></div>
+      <div class="question-text" id="question-text"></div>
+      <div id="code-container"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="prevQuestion()" id="prev-btn">← Назад</button>
+        <button class="btn btn-secondary" onclick="finishEarly()" id="finish-btn" style="font-size:13px;padding:10px 16px;">Завершить досрочно</button>
+        <button class="btn" onclick="nextQuestion()" id="next-btn">Следующий →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="result-screen" class="hidden result-screen">
+    <h2>Тест завершён</h2>
+    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">153</span></div>
+    <div class="percentage"><span id="final-percent">0</span>% правильных</div>
+    <p id="skipped-info" style="color:#fbbf24;margin-bottom:12px;"></p>
+    <p id="result-message"></p>
+    <button class="btn" onclick="location.reload()">Пройти ещё раз</button>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script src="quiz.js"></script>
+</body>
+</html>
