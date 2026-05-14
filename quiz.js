@@ -1,4 +1,6 @@
-const STORAGE_KEY = 'subd-quiz-state';
+const STORAGE_KEY = 'subd-quiz-state-v2';
+const QUIZ_VERSION = 2;
+const EXPECTED_COUNT = 45;
 
 let currentIndex = 0;
 let correctCount = 0;
@@ -7,10 +9,14 @@ let answered = [];
 let activeQuestions = [];
 let isFinished = false;
 
+try { localStorage.removeItem('subd-quiz-state'); } catch (e) {}
+
 window.addEventListener('DOMContentLoaded', () => {
   const saved = loadState();
-  if (saved && saved.activeQuestions && saved.activeQuestions.length > 0) {
+  if (saved && saved.version === QUIZ_VERSION && saved.activeQuestions && saved.activeQuestions.length === EXPECTED_COUNT) {
     showResumeButton();
+  } else if (saved) {
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
   }
 });
 
@@ -81,7 +87,7 @@ function switchToQuiz() {
 function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      activeQuestions, answered, currentIndex, correctCount, wrongCount
+      version: QUIZ_VERSION, activeQuestions, answered, currentIndex, correctCount, wrongCount
     }));
   } catch (e) {}
 }
