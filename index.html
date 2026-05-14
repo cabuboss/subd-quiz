@@ -256,14 +256,14 @@ h1 {
 <div class="container">
   <header>
     <h1>Тест по СУБД</h1>
-    <div class="subtitle">MS SQL Server &mdash; лабораторные 1-14</div>
+    <div class="subtitle">MS SQL Server &mdash; разбор по апелляции</div>
   </header>
 
   <div id="start-screen" class="start-screen">
     <h2>Подготовка к тесту</h2>
-    <p>В тесте <strong>153 вопрос</strong> по 14 темам:</p>
-    <p style="text-align:left; max-width:500px; margin:20px auto; color:#94a3b8; font-size:14px;">
-      1. Знакомство с SQL Server &middot; 2. SELECT &middot; 3. Фильтрация (WHERE) &middot; 4. Типы данных и функции &middot; 5. Агрегатные функции &middot; 6. JOIN &middot; 7. UNION/EXCEPT/INTERSECT &middot; 8. Подзапросы &middot; 9. DDL &middot; 10. DML &middot; 11. Программирование T-SQL &middot; 12. Пользовательские функции &middot; 13. Хранимые процедуры &middot; 14. Триггеры
+    <p>В тесте <strong>45 вопросов</strong> по основным темам:</p>
+    <p style="text-align:left; max-width:560px; margin:20px auto; color:#94a3b8; font-size:14px;">
+      Основы T-SQL &middot; Ограничения (Constraints) &middot; Типы данных и функции &middot; SELECT и JOIN &middot; UNION / EXCEPT / INTERSECT &middot; Триггеры &middot; Удаление объектов (DROP)
     </p>
     <p>Без таймера. Подсветка верных и неверных ответов.</p>
     <button class="btn" onclick="startQuiz(false)">Начать по порядку</button>
@@ -272,7 +272,7 @@ h1 {
 
   <div id="quiz-screen" class="hidden">
     <div class="stats">
-      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">153</span></span>
+      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">45</span></span>
       <span><span class="correct">Верно: <span id="correct-count">0</span></span> &middot; <span class="wrong">Ошибок: <span id="wrong-count">0</span></span></span>
     </div>
     <div class="progress-bar">
@@ -294,7 +294,7 @@ h1 {
 
   <div id="result-screen" class="hidden result-screen">
     <h2>Тест завершён</h2>
-    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">153</span></div>
+    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">45</span></div>
     <div class="percentage"><span id="final-percent">0</span>% правильных</div>
     <p id="skipped-info" style="color:#fbbf24;margin-bottom:12px;"></p>
     <p id="result-message"></p>
