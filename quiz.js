@@ -1,6 +1,6 @@
-const STORAGE_KEY = 'subd-quiz-state-v2';
-const QUIZ_VERSION = 2;
-const EXPECTED_COUNT = 45;
+const STORAGE_KEY = 'subd-quiz-state-v3';
+const QUIZ_VERSION = 3;
+const EXPECTED_COUNT = 120;
 
 let currentIndex = 0;
 let correctCount = 0;
@@ -10,6 +10,7 @@ let activeQuestions = [];
 let isFinished = false;
 
 try { localStorage.removeItem('subd-quiz-state'); } catch (e) {}
+try { localStorage.removeItem('subd-quiz-state-v2'); } catch (e) {}
 
 window.addEventListener('DOMContentLoaded', () => {
   const saved = loadState();
@@ -46,8 +47,21 @@ function showResumeButton() {
   startScreen.appendChild(clearBtn);
 }
 
+function shuffleOptions(q) {
+  const indices = q.options.map((_, i) => i);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  return {
+    ...q,
+    options: indices.map(i => q.options[i]),
+    correct: indices.indexOf(q.correct)
+  };
+}
+
 function startQuiz(shuffle) {
-  activeQuestions = [...QUESTIONS];
+  activeQuestions = QUESTIONS.map(shuffleOptions);
   if (shuffle) {
     for (let i = activeQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

@@ -264,9 +264,9 @@ h1 {
 
   <div id="start-screen" class="start-screen">
     <h2>Подготовка к тесту</h2>
-    <p>В тесте <strong>45 вопросов</strong> по основным темам:</p>
-    <p style="text-align:left; max-width:560px; margin:20px auto; color:#94a3b8; font-size:14px;">
-      Основы T-SQL &middot; Ограничения (Constraints) &middot; Типы данных и функции &middot; SELECT и JOIN &middot; UNION / EXCEPT / INTERSECT &middot; Триггеры &middot; Удаление объектов (DROP)
+    <p>В тесте <strong>120 вопросов</strong> по всему материалу курса:</p>
+    <p style="text-align:left; max-width:600px; margin:20px auto; color:#94a3b8; font-size:14px;">
+      Основы T-SQL &middot; Ограничения &middot; Типы данных и функции &middot; SELECT / WHERE / агрегаты &middot; JOIN &middot; UNION / EXCEPT / INTERSECT &middot; Подзапросы &middot; DDL / DML &middot; Пользовательские функции &middot; Хранимые процедуры &middot; Триггеры &middot; Представления &middot; Транзакции &middot; Курсоры &middot; Оконные функции
     </p>
     <p>Без таймера. Подсветка верных и неверных ответов.</p>
     <button class="btn" onclick="startQuiz(false)">Начать по порядку</button>
@@ -275,7 +275,7 @@ h1 {
 
   <div id="quiz-screen" class="hidden">
     <div class="stats">
-      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">45</span></span>
+      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">120</span></span>
       <span><span class="correct">Верно: <span id="correct-count">0</span></span> &middot; <span class="wrong">Ошибок: <span id="wrong-count">0</span></span></span>
     </div>
     <div class="progress-bar">
@@ -297,7 +297,7 @@ h1 {
 
   <div id="result-screen" class="hidden result-screen">
     <h2>Тест завершён</h2>
-    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">45</span></div>
+    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">120</span></div>
     <div class="percentage"><span id="final-percent">0</span>% правильных</div>
     <p id="skipped-info" style="color:#fbbf24;margin-bottom:12px;"></p>
     <p id="result-message"></p>
