@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'subd-quiz-state-v5';
+const LAST_RESULT_KEY = 'subd-quiz-last-result-v5';
 const QUIZ_VERSION = 5;
 
 let currentIndex = 0;
@@ -19,7 +20,63 @@ window.addEventListener('DOMContentLoaded', () => {
   } else if (saved) {
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
   }
+  const lastResult = loadLastResult();
+  if (lastResult && lastResult.version === QUIZ_VERSION) {
+    showLastResultButton(lastResult);
+  }
 });
+
+function showLastResultButton(lastResult) {
+  const startScreen = document.getElementById('start-screen');
+  if (document.getElementById('last-result-btn')) return;
+  const mistakesCount = (lastResult.answered || [])
+    .filter((a, i) => a !== null && a !== lastResult.activeQuestions[i].correct).length;
+  const btn = document.createElement('button');
+  btn.id = 'last-result-btn';
+  btn.className = 'btn';
+  btn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+  btn.textContent = mistakesCount > 0
+    ? 'Разбор ошибок прошлой попытки (' + mistakesCount + ')'
+    : 'Результат прошлой попытки';
+  btn.onclick = () => {
+    activeQuestions = lastResult.activeQuestions;
+    answered = lastResult.answered;
+    correctCount = lastResult.correctCount;
+    wrongCount = lastResult.wrongCount;
+    isFinished = true;
+    if (mistakesCount > 0) {
+      showReview();
+    } else {
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+      const answeredCount = correctCount + wrongCount;
+      const pct = answeredCount > 0 ? Math.round(correctCount / answeredCount * 100) : 0;
+      document.getElementById('final-score').textContent = correctCount;
+      document.getElementById('final-percent').textContent = pct;
+      document.getElementById('final-total').textContent = activeQuestions.length;
+      const revBtn = document.getElementById('review-btn');
+      if (revBtn) revBtn.style.display = wrongCount > 0 ? '' : 'none';
+    }
+  };
+  startScreen.appendChild(document.createElement('br'));
+  startScreen.appendChild(btn);
+}
+
+function loadLastResult() {
+  try {
+    const raw = localStorage.getItem(LAST_RESULT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+function saveLastResult() {
+  try {
+    localStorage.setItem(LAST_RESULT_KEY, JSON.stringify({
+      version: QUIZ_VERSION, activeQuestions, answered, correctCount, wrongCount,
+      finishedAt: new Date().toISOString()
+    }));
+  } catch (e) {}
+}
 
 function showResumeButton() {
   const startScreen = document.getElementById('start-screen');
@@ -267,6 +324,7 @@ function finishQuiz() {
   const reviewBtn = document.getElementById('review-btn');
   if (reviewBtn) reviewBtn.style.display = wrongCount > 0 ? '' : 'none';
 
+  saveLastResult();
   localStorage.removeItem(STORAGE_KEY);
   window.scrollTo({ top: 0 });
 }
