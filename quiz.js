@@ -1,6 +1,5 @@
-const STORAGE_KEY = 'subd-quiz-state-v3';
-const QUIZ_VERSION = 3;
-const EXPECTED_COUNT = 120;
+const STORAGE_KEY = 'subd-quiz-state-v4';
+const QUIZ_VERSION = 4;
 
 let currentIndex = 0;
 let correctCount = 0;
@@ -9,12 +8,13 @@ let answered = [];
 let activeQuestions = [];
 let isFinished = false;
 
-try { localStorage.removeItem('subd-quiz-state'); } catch (e) {}
-try { localStorage.removeItem('subd-quiz-state-v2'); } catch (e) {}
+['subd-quiz-state', 'subd-quiz-state-v2', 'subd-quiz-state-v3'].forEach(k => {
+  try { localStorage.removeItem(k); } catch (e) {}
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   const saved = loadState();
-  if (saved && saved.version === QUIZ_VERSION && saved.activeQuestions && saved.activeQuestions.length === EXPECTED_COUNT) {
+  if (saved && saved.version === QUIZ_VERSION && saved.activeQuestions && saved.activeQuestions.length > 0) {
     showResumeButton();
   } else if (saved) {
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
@@ -60,8 +60,9 @@ function shuffleOptions(q) {
   };
 }
 
-function startQuiz(shuffle) {
-  activeQuestions = QUESTIONS.map(shuffleOptions);
+function startQuiz(shuffle, examOnly) {
+  const source = examOnly ? QUESTIONS.filter(q => q.topic.startsWith('🎯')) : QUESTIONS;
+  activeQuestions = source.map(shuffleOptions);
   if (shuffle) {
     for (let i = activeQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));

@@ -362,18 +362,24 @@ h1 {
 
   <div id="start-screen" class="start-screen">
     <h2>Подготовка к тесту</h2>
-    <p>В тесте <strong>120 вопросов</strong> по всему материалу курса:</p>
+    <p>В банке <strong>148 вопросов</strong> по всему материалу курса:</p>
     <p style="text-align:left; max-width:600px; margin:20px auto; color:#94a3b8; font-size:14px;">
       Основы T-SQL &middot; Ограничения &middot; Типы данных и функции &middot; SELECT / WHERE / агрегаты &middot; JOIN &middot; UNION / EXCEPT / INTERSECT &middot; Подзапросы &middot; DDL / DML &middot; Пользовательские функции &middot; Хранимые процедуры &middot; Триггеры &middot; Представления &middot; Транзакции &middot; Курсоры &middot; Оконные функции
     </p>
     <p>Без таймера. Подсветка верных и неверных ответов.</p>
-    <button class="btn" onclick="startQuiz(false)">Начать по порядку</button>
-    <button class="btn btn-secondary" onclick="startQuiz(true)">Начать вперемешку</button>
+    <div style="margin-bottom:20px;padding:14px;background:#0f172a;border-radius:10px;border-left:4px solid #f59e0b;text-align:left;max-width:560px;margin-left:auto;margin-right:auto;">
+      <div style="color:#fbbf24;font-weight:600;margin-bottom:6px;">🎯 Реальные вопросы из теста</div>
+      <div style="color:#cbd5e1;font-size:13px;line-height:1.5;">28 вопросов, вытащенных напрямую из Wayground-теста преподавателя. Это самое ценное для подготовки.</div>
+    </div>
+    <button class="btn" style="background:linear-gradient(135deg,#f59e0b,#d97706);" onclick="startQuiz(true, true)">🎯 Только реальные (28)</button>
+    <br>
+    <button class="btn" onclick="startQuiz(false)">Все 148 по порядку</button>
+    <button class="btn btn-secondary" onclick="startQuiz(true)">Все 148 вперемешку</button>
   </div>
 
   <div id="quiz-screen" class="hidden">
     <div class="stats">
-      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">120</span></span>
+      <span>Вопрос <span id="current-num">1</span> из <span id="total-num">148</span></span>
       <span><span class="correct">Верно: <span id="correct-count">0</span></span> &middot; <span class="wrong">Ошибок: <span id="wrong-count">0</span></span></span>
     </div>
     <div class="progress-bar">
@@ -395,7 +401,7 @@ h1 {
 
   <div id="result-screen" class="hidden result-screen">
     <h2>Тест завершён</h2>
-    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">120</span></div>
+    <div class="score-display"><span id="final-score">0</span> / <span id="final-total">148</span></div>
     <div class="percentage"><span id="final-percent">0</span>% правильных</div>
     <p id="skipped-info" style="color:#fbbf24;margin-bottom:12px;"></p>
     <p id="result-message"></p>
