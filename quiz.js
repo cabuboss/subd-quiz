@@ -263,8 +263,143 @@ function finishQuiz() {
   else if (pct >= 50) msg = 'Серединка на половинку. Прогони ещё разок.';
   else msg = 'Хуёво. Перечитай теорию и пройди тест ещё раз.';
   document.getElementById('result-message').textContent = msg;
+
+  const reviewBtn = document.getElementById('review-btn');
+  if (reviewBtn) reviewBtn.style.display = wrongCount > 0 ? '' : 'none';
+
   localStorage.removeItem(STORAGE_KEY);
   window.scrollTo({ top: 0 });
+}
+
+function getMistakes() {
+  const out = [];
+  activeQuestions.forEach((q, i) => {
+    const ans = answered[i];
+    if (ans !== null && ans !== q.correct) {
+      out.push({ index: i, q, selected: ans });
+    }
+  });
+  return out;
+}
+
+function showReview() {
+  const mistakes = getMistakes();
+  document.getElementById('result-screen').classList.add('hidden');
+  document.getElementById('review-screen').classList.remove('hidden');
+  document.getElementById('review-summary').textContent =
+    'Ошибок: ' + mistakes.length + ' из ' + activeQuestions.length + '. Проверь и пришли список на разбор.';
+
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  mistakes.forEach(({ index, q, selected }) => {
+    const card = document.createElement('div');
+    card.className = 'review-card';
+
+    const num = document.createElement('div');
+    num.className = 'review-num';
+    num.textContent = 'Вопрос #' + (index + 1);
+    card.appendChild(num);
+
+    const topic = document.createElement('div');
+    topic.className = 'review-topic';
+    topic.textContent = q.topic;
+    card.appendChild(topic);
+
+    const qText = document.createElement('div');
+    qText.className = 'review-q';
+    qText.textContent = q.question;
+    card.appendChild(qText);
+
+    if (q.code) {
+      const code = document.createElement('div');
+      code.className = 'review-code';
+      code.textContent = q.code;
+      card.appendChild(code);
+    }
+
+    const yourAns = document.createElement('div');
+    yourAns.className = 'review-answer review-your';
+    yourAns.innerHTML = '<strong>Твой ответ (' + letters[selected] + '):</strong> ' + escapeHtml(q.options[selected]);
+    card.appendChild(yourAns);
+
+    const rightAns = document.createElement('div');
+    rightAns.className = 'review-answer review-right';
+    rightAns.innerHTML = '<strong>Правильный (' + letters[q.correct] + '):</strong> ' + escapeHtml(q.options[q.correct]);
+    card.appendChild(rightAns);
+
+    if (q.explanation) {
+      const expl = document.createElement('div');
+      expl.className = 'review-expl';
+      expl.textContent = q.explanation;
+      card.appendChild(expl);
+    }
+
+    list.appendChild(card);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToResults() {
+  document.getElementById('review-screen').classList.add('hidden');
+  document.getElementById('result-screen').classList.remove('hidden');
+  window.scrollTo({ top: 0 });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function copyMistakes() {
+  const mistakes = getMistakes();
+  const letters = ['A', 'B', 'C', 'D'];
+  const lines = ['Ошибки в тесте СУБД (' + mistakes.length + ' из ' + activeQuestions.length + '):', ''];
+  mistakes.forEach(({ index, q, selected }, i) => {
+    lines.push((i + 1) + '. [' + q.topic + '] ' + q.question);
+    if (q.code) lines.push('   Код: ' + q.code.replace(/\n/g, ' \\n '));
+    lines.push('   Мой ответ: ' + letters[selected] + ') ' + q.options[selected]);
+    lines.push('   Правильный: ' + letters[q.correct] + ') ' + q.options[q.correct]);
+    if (q.explanation) lines.push('   Пояснение: ' + q.explanation);
+    lines.push('');
+  });
+  const text = lines.join('\n');
+  const btn = document.getElementById('copy-mistakes-btn');
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  };
+  const done = () => {
+    showToast('Скопировано! Пришли мне этот текст.');
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = 'Скопировано';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => { fallback(); done(); });
+  } else {
+    fallback();
+    done();
+  }
+}
+
+function showToast(msg) {
+  const existing = document.querySelector('.copy-toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'copy-toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
 }
 
 function updateProgress() {
