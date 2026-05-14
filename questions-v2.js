@@ -1,12 +1,5 @@
 const QUESTIONS = [
-  // ==================== T-SQL. ОСНОВЫ (10 вопросов) ====================
-  {
-    topic: "T-SQL. Основы",
-    question: "Свойство автоинкремента столбца в MS SQL Server?",
-    options: ["AUTO_INCREMENT", "SERIAL", "IDENTITY", "AUTOINC"],
-    correct: 2,
-    explanation: "IDENTITY(seed, increment). AUTO_INCREMENT - MySQL, SERIAL - PostgreSQL."
-  },
+  // ==================== T-SQL. ОСНОВЫ ====================
   {
     topic: "T-SQL. Основы",
     question: "С какого символа начинается имя локальной переменной?",
@@ -28,13 +21,6 @@ const QUESTIONS = [
   },
   {
     topic: "T-SQL. Основы",
-    question: "Команда изменения данных в существующих строках?",
-    options: ["ALTER ROW", "MODIFY", "UPDATE", "CHANGE"],
-    correct: 2,
-    explanation: "UPDATE меняет данные. ALTER меняет структуру объектов."
-  },
-  {
-    topic: "T-SQL. Основы",
     question: "Что вернёт DELETE без WHERE?",
     options: [
       "Ничего не произойдёт",
@@ -44,30 +30,6 @@ const QUESTIONS = [
     ],
     correct: 3,
     explanation: "DELETE без WHERE удаляет все строки таблицы."
-  },
-  {
-    topic: "T-SQL. Основы",
-    question: "Можно ли вкладывать циклы WHILE друг в друга?",
-    options: [
-      "Да, без ограничений",
-      "Нет, нельзя",
-      "Только с SELECT внутри",
-      "Только два уровня вложенности"
-    ],
-    correct: 0,
-    explanation: "Вложенность WHILE в T-SQL разрешена, ограничений на уровень нет."
-  },
-  {
-    topic: "T-SQL. Основы",
-    question: "Можно ли присвоить значение переменной через SELECT?",
-    options: [
-      "Нет, только через SET",
-      "Да, например: SELECT @var = column FROM table",
-      "Только в хранимых процедурах",
-      "Только если переменная объявлена как OUTPUT"
-    ],
-    correct: 1,
-    explanation: "SELECT @var = column - корректный способ. Альтернатива: SET @var = value."
   },
   {
     topic: "T-SQL. Основы",
@@ -81,27 +43,63 @@ const QUESTIONS = [
     correct: 2,
     explanation: "RETURN возвращает int (0 - успех, ненулевое - ошибка). Данные - через OUTPUT-параметры."
   },
+  // Wayground #6: оператор цикла в T-SQL
   {
     topic: "T-SQL. Основы",
-    question: "Объявление двух переменных одним DECLARE?",
-    options: [
-      "DECLARE @a INT; DECLARE @b INT",
-      "DECLARE @a INT, @b INT",
-      "DECLARE @a INT AND @b INT",
-      "VAR @a INT, @b INT"
-    ],
-    correct: 1,
-    explanation: "DECLARE @a INT, @b INT - несколько переменных через запятую."
+    question: "Оператор цикла в T-SQL?",
+    options: ["LOOP", "FOR EACH", "REPEAT...UNTIL", "WHILE"],
+    correct: 3,
+    explanation: "В T-SQL единственный цикл: WHILE. LOOP/FOR EACH/REPEAT - другие СУБД."
   },
+  // Wayground #14: BREAK - выход из WHILE
   {
     topic: "T-SQL. Основы",
-    question: "Значение переменной сразу после DECLARE без инициализации?",
-    options: ["0", "NULL", "Пустая строка", "Undefined"],
-    correct: 1,
-    explanation: "Неинициализированные переменные имеют значение NULL."
+    question: "Оператор для выхода из WHILE до завершения цикла?",
+    options: ["EXIT", "STOP", "RETURN", "BREAK"],
+    correct: 3,
+    explanation: "BREAK прерывает WHILE. CONTINUE переходит к следующей итерации."
+  },
+  // Wayground #10: синтаксис UPDATE
+  {
+    topic: "T-SQL. Основы",
+    question: "Корректный синтаксис UPDATE?",
+    options: [
+      "UPDATE таблица SET столбец = значение WHERE условие",
+      "UPDATE таблица (столбец = значение)",
+      "UPDATE таблица WHERE условие SET столбец = значение",
+      "UPDATE SET столбец = значение FROM таблица"
+    ],
+    correct: 0,
+    explanation: "Стандарт: UPDATE <таблица> SET <столбец> = <значение> [WHERE <условие>]."
+  },
+  // Wayground #20: объявить переменную
+  {
+    topic: "T-SQL. Основы",
+    question: "Корректный синтаксис объявления переменной?",
+    options: [
+      "DECLARE @myVariable INT;",
+      "VAR myVar INT;",
+      "LET @myVariable AS INT;",
+      "SET VARIABLE @myVariable INT;"
+    ],
+    correct: 0,
+    explanation: "DECLARE @name TYPE [= value]. Затем SET или SELECT для присваивания."
+  },
+  // Wayground #24: временные таблицы физически где
+  {
+    topic: "T-SQL. Основы",
+    question: "Где физически хранятся временные таблицы?",
+    options: [
+      "В базе master",
+      "В памяти сервера, не на диске",
+      "В системной базе tempdb",
+      "В пользовательской базе, где созданы"
+    ],
+    correct: 2,
+    explanation: "Все временные таблицы (#temp и ##global) физически живут в tempdb."
   },
 
-  // ==================== ОГРАНИЧЕНИЯ (8 вопросов) ====================
+  // ==================== ОГРАНИЧЕНИЯ ====================
   {
     topic: "Ограничения",
     question: "Ограничение, запрещающее NULL в столбце?",
@@ -174,7 +172,7 @@ const QUESTIONS = [
     explanation: "CHECK ограничивает допустимые значения столбца через логическое условие."
   },
 
-  // ==================== ТИПЫ ДАННЫХ И ФУНКЦИИ (18 вопросов) ====================
+  // ==================== ТИПЫ ДАННЫХ И ФУНКЦИИ ====================
   {
     topic: "Функции и типы данных",
     question: "Тип данных для хранения строк?",
@@ -238,18 +236,6 @@ const QUESTIONS = [
   },
   {
     topic: "Функции и типы данных",
-    question: "Что возвращает скалярная пользовательская функция?",
-    options: [
-      "Несколько строк",
-      "Одно значение",
-      "Таблицу",
-      "Только NULL"
-    ],
-    correct: 1,
-    explanation: "Скалярная функция - одно значение. Таблицу возвращает табличная функция."
-  },
-  {
-    topic: "Функции и типы данных",
     question: "Что возвращает Inline (встроенная табличная) функция?",
     options: [
       "Одно значение",
@@ -294,7 +280,7 @@ const QUESTIONS = [
     explanation: "CHARINDEX(подстрока, строка) - позиция первого вхождения. LOCATE() - MySQL, INDEXOF() нет в T-SQL."
   },
 
-  // ==================== SELECT / WHERE / ФИЛЬТРАЦИЯ (10 вопросов) ====================
+  // ==================== SELECT / WHERE / ФИЛЬТРАЦИЯ ====================
   {
     topic: "Запросы. SELECT/JOIN",
     question: "Первые 5 строк из таблицы Employees в T-SQL?",
@@ -401,7 +387,7 @@ const QUESTIONS = [
     explanation: "Приоритет: NOT, AND, OR. Для явного порядка - скобки."
   },
 
-  // ==================== АГРЕГАТЫ, GROUP BY, HAVING (10 вопросов) ====================
+  // ==================== АГРЕГАТЫ, GROUP BY, HAVING ====================
   {
     topic: "Запросы. SELECT/JOIN",
     question: "Что возвращает COUNT(ColumnName)?",
@@ -475,7 +461,7 @@ const QUESTIONS = [
     explanation: "TOP 30 PERCENT берёт первые 30% строк. Осмысленно с ORDER BY."
   },
 
-  // ==================== JOIN (12 вопросов) ====================
+  // ==================== JOIN ====================
   {
     topic: "Запросы. SELECT/JOIN",
     question: "Соединение: каждая строка с каждой (декартово произведение)?",
@@ -556,14 +542,7 @@ const QUESTIONS = [
     explanation: "Неявное соединение: таблицы через запятую в FROM, условие в WHERE."
   },
 
-  // ==================== UNION / EXCEPT / INTERSECT (6 вопросов) ====================
-  {
-    topic: "Запросы. UNION/EXCEPT/INTERSECT",
-    question: "Оператор для общих строк из двух запросов?",
-    options: ["CROSS JOIN", "UNION", "EXCEPT", "INTERSECT"],
-    correct: 3,
-    explanation: "INTERSECT - пересечение. EXCEPT - разность. UNION - объединение."
-  },
+  // ==================== UNION / EXCEPT / INTERSECT ====================
   {
     topic: "Запросы. UNION/EXCEPT/INTERSECT",
     question: "EXCEPT, если все строки первого совпадают со вторым?",
@@ -619,8 +598,16 @@ const QUESTIONS = [
     correct: 1,
     explanation: "В EXCEPT/INTERSECT два NULL - равны (в отличие от WHERE col = NULL)."
   },
+  // Wayground #28: INTERSECT - пересечение множеств
+  {
+    topic: "Запросы. UNION/EXCEPT/INTERSECT",
+    question: "Оператор пересечения множеств результатов двух запросов?",
+    options: ["INNER APPLY", "EXCEPT", "INTERSECT", "CROSS JOIN"],
+    correct: 2,
+    explanation: "INTERSECT - пересечение (общие строки). EXCEPT - разность. UNION - объединение."
+  },
 
-  // ==================== ПОДЗАПРОСЫ (10 вопросов) ====================
+  // ==================== ПОДЗАПРОСЫ ====================
   {
     topic: "Запросы. SELECT/JOIN",
     question: "Когда выражение с ANY истинно?",
@@ -642,18 +629,6 @@ const QUESTIONS = [
   },
   {
     topic: "Запросы. SELECT/JOIN",
-    question: "Что проверяет EXISTS?",
-    options: [
-      "Что подзапрос вернул хотя бы одну строку",
-      "Что подзапрос вернул ровно одно значение",
-      "Что столбец не NULL",
-      "Что таблица существует в БД"
-    ],
-    correct: 0,
-    explanation: "EXISTS: проверяет, вернул ли подзапрос хотя бы одну строку."
-  },
-  {
-    topic: "Запросы. SELECT/JOIN",
     question: "Что такое коррелирующий подзапрос?",
     options: [
       "Выполняется один раз для всего внешнего запроса",
@@ -671,17 +646,18 @@ const QUESTIONS = [
     correct: 1,
     explanation: "T-SQL: до 32 уровней вложенности. Выполнение с самого глубокого."
   },
+  // Wayground #12: Salary > ALL(subquery)
   {
     topic: "Запросы. SELECT/JOIN",
-    question: "x > ALL(SELECT ...) истинно, когда...",
+    question: "Условие Salary > ALL(subquery) - что означает > ALL?",
     options: [
-      "x больше хотя бы одного значения из подзапроса",
-      "x больше всех значений из подзапроса",
-      "Выбирает все строки без фильтрации",
-      "Эквивалентен IN"
+      "Значение больше хотя бы одного значения подзапроса",
+      "Значение больше среднего набора подзапроса",
+      "Значение больше минимума набора подзапроса",
+      "Значение больше максимума набора подзапроса"
     ],
-    correct: 1,
-    explanation: "ALL: условие верно для ВСЕХ значений. x > ALL(...) - x больше каждого из набора."
+    correct: 3,
+    explanation: "> ALL - больше всех значений из подзапроса, то есть больше максимума."
   },
   {
     topic: "Запросы. SELECT/JOIN",
@@ -719,20 +695,16 @@ const QUESTIONS = [
     correct: 0,
     explanation: "Подзапросы в WHERE для сравнения (=, <, >) возвращают скалярное значение."
   },
-
-  // ==================== DDL (8 вопросов) ====================
+  // Wayground #18: EXISTS для проверки существования строк
   {
-    topic: "DDL. Удаление объектов",
-    question: "Синтаксис удаления пользовательской функции?",
-    options: [
-      "DROP TABLE function_name",
-      "DELETE FUNCTION function_name",
-      "REMOVE FUNCTION function_name",
-      "DROP FUNCTION function_name"
-    ],
-    correct: 3,
-    explanation: "DROP FUNCTION fn_name. DROP TABLE - для таблиц."
+    topic: "Запросы. SELECT/JOIN",
+    question: "Лучший оператор для проверки существования строк?",
+    options: ["EXISTS", "COUNT(*)", "IN", "DISTINCT"],
+    correct: 0,
+    explanation: "EXISTS останавливается на первой найденной строке - быстрее, чем COUNT(*) > 0."
   },
+
+  // ==================== DDL ====================
   {
     topic: "DDL. Удаление объектов",
     question: "Синтаксис удаления хранимой процедуры?",
@@ -759,32 +731,6 @@ const QUESTIONS = [
   },
   {
     topic: "DDL. Удаление объектов",
-    question: "Столбец-автоинкремент в MS SQL Server?",
-    options: [
-      "id INT AUTO_INCREMENT PRIMARY KEY",
-      "id INT SERIAL PRIMARY KEY",
-      "id INT PRIMARY KEY IDENTITY(1,1)",
-      "id INT PRIMARY KEY SEQUENCE"
-    ],
-    correct: 2,
-    explanation: "IDENTITY(seed, increment). IDENTITY(1,1): с 1, шаг 1. AUTO_INCREMENT - MySQL, SERIAL - PostgreSQL."
-  },
-  {
-    topic: "DDL. Удаление объектов",
-    question: "Сколько таблиц в одной БД MS SQL Server?",
-    options: ["65536", "1000000", "2147483648", "Без ограничений"],
-    correct: 2,
-    explanation: "До 2147483648 таблиц. Стандартная таблица: до 1024 столбцов."
-  },
-  {
-    topic: "DDL. Удаление объектов",
-    question: "Максимум символов в имени таблицы MS SQL Server?",
-    options: ["64", "128", "256", "512"],
-    correct: 1,
-    explanation: "Имя таблицы/БД: до 128 символов. Локальные временные таблицы: до 116."
-  },
-  {
-    topic: "DDL. Удаление объектов",
     question: "Как переключиться на базу данных?",
     options: [
       "CONNECT TO db_name",
@@ -807,8 +753,63 @@ const QUESTIONS = [
     correct: 2,
     explanation: "IDENTITY только для числовых: tinyint, smallint, int, bigint, decimal(p,0). VARCHAR не поддерживается."
   },
+  // Wayground #5: IDENTITY - для чего
+  {
+    topic: "DDL. Удаление объектов",
+    question: "Для чего используется свойство IDENTITY в столбце?",
+    options: [
+      "Для указания, что столбец является первичным ключом",
+      "Для автоматического присвоения уникальных строковых значений",
+      "Для шифрования данных в столбце",
+      "Для автоматического присвоения возрастающих числовых значений"
+    ],
+    correct: 3,
+    explanation: "IDENTITY(seed, increment) - автоматический автоинкремент целочисленных значений."
+  },
+  // Wayground #6: свойство для автоинкремента (дубль тематики, но прямой вопрос)
+  {
+    topic: "DDL. Удаление объектов",
+    question: "Свойство SQL Server для автоинкрементных значений в столбце?",
+    options: ["IDENTITY", "AUTO_NUMBER", "SEQUENCE", "SERIAL"],
+    correct: 0,
+    explanation: "IDENTITY - MS SQL Server. AUTO_NUMBER не существует, SEQUENCE - отдельный объект, SERIAL - PostgreSQL."
+  },
+  // Wayground #16: DROP TABLE Employees
+  {
+    topic: "DDL. Удаление объектов",
+    question: "Корректный синтаксис удаления таблицы Employees?",
+    options: [
+      "TRUNCATE Employees;",
+      "DELETE TABLE Employees;",
+      "DROP TABLE Employees;",
+      "REMOVE TABLE Employees;"
+    ],
+    correct: 2,
+    explanation: "DROP TABLE удаляет таблицу полностью со всеми данными и структурой. TRUNCATE удаляет только строки."
+  },
+  // Wayground #21: удалить функцию/процедуру без DROP
+  {
+    topic: "DDL. Удаление объектов",
+    question: "Можно ли удалить функцию или процедуру без команды DROP?",
+    options: [
+      "Да, если она не используется в других запросах",
+      "Да, через DELETE в системных таблицах",
+      "Нет, объекты схемы удаляются только через DROP",
+      "Да, очистив код через ALTER"
+    ],
+    correct: 2,
+    explanation: "Объекты схемы (функции, процедуры, таблицы, представления) удаляются только через DROP."
+  },
+  // Wayground #26: ALTER TABLE
+  {
+    topic: "DDL. Удаление объектов",
+    question: "Команда для изменения структуры существующей таблицы?",
+    options: ["UPDATE TABLE", "ALTER TABLE", "CHANGE TABLE", "MODIFY TABLE"],
+    correct: 1,
+    explanation: "ALTER TABLE - изменение структуры (ADD/DROP/ALTER COLUMN). UPDATE меняет данные."
+  },
 
-  // ==================== DML (6 вопросов) ====================
+  // ==================== DML ====================
   {
     topic: "DML. Данные",
     question: "Несколько строк одним INSERT в T-SQL?",
@@ -820,18 +821,6 @@ const QUESTIONS = [
     ],
     correct: 0,
     explanation: "INSERT INTO T VALUES (v1), (v2), (v3). Каждый список в своих скобках."
-  },
-  {
-    topic: "DML. Данные",
-    question: "Отличие TRUNCATE TABLE от DELETE без WHERE?",
-    options: [
-      "TRUNCATE удаляет только первые 100 строк",
-      "TRUNCATE быстрее и требует меньше ресурсов журнала транзакций",
-      "DELETE быстрее, не сбрасывает счётчик IDENTITY",
-      "TRUNCATE можно откатить, DELETE нельзя"
-    ],
-    correct: 1,
-    explanation: "TRUNCATE быстрее, меньше ресурсов журнала, сбрасывает счётчик IDENTITY."
   },
   {
     topic: "DML. Данные",
@@ -859,18 +848,6 @@ const QUESTIONS = [
   },
   {
     topic: "DML. Данные",
-    question: "Обязательно ли FROM в DELETE FROM T WHERE ...?",
-    options: [
-      "Да, FROM обязательно",
-      "Нет, DELETE T WHERE ... тоже корректно",
-      "FROM только при JOIN",
-      "FROM только для временных таблиц"
-    ],
-    correct: 1,
-    explanation: "FROM в DELETE необязателен. DELETE FROM T и DELETE T - оба варианта корректны."
-  },
-  {
-    topic: "DML. Данные",
     question: "NOT NULL столбец без DEFAULT, не указан в INSERT - что произойдёт?",
     options: [
       "Вставится NULL автоматически",
@@ -881,39 +858,34 @@ const QUESTIONS = [
     correct: 1,
     explanation: "NOT NULL без DEFAULT - ошибка при вставке без этого столбца. Есть DEFAULT - подставится."
   },
-
-  // ==================== ПОЛЬЗОВАТЕЛЬСКИЕ ФУНКЦИИ (6 вопросов) ====================
+  // Wayground #3: DELETE vs TRUNCATE
   {
-    topic: "Пользовательские функции",
-    question: "Максимум параметров у пользовательской функции T-SQL?",
-    options: ["100", "1000", "2100", "4096"],
-    correct: 2,
-    explanation: "Пользовательские функции: до 2100 параметров."
-  },
-  {
-    topic: "Пользовательские функции",
-    question: "Могут ли функции выполнять INSERT/UPDATE/DELETE?",
+    topic: "DML. Данные",
+    question: "Основное отличие DELETE от TRUNCATE TABLE?",
     options: [
-      "Да, без ограничений",
-      "Да, только во временных таблицах",
-      "Нет, функции не могут изменять состояние БД",
-      "Только скалярные функции"
-    ],
-    correct: 2,
-    explanation: "Пользовательские функции не могут выполнять DML-операции."
-  },
-  {
-    topic: "Пользовательские функции",
-    question: "Временные таблицы внутри пользовательских функций?",
-    options: [
-      "Да, без ограничений",
-      "Нет, временные таблицы запрещены; табличные переменные разрешены",
-      "Только локальные (#)",
-      "Только глобальные (##)"
+      "DELETE работает только с таблицами, TRUNCATE с представлениями",
+      "DELETE удаляет строки по одной и может быть отменён; TRUNCATE удаляет все строки сразу и не может быть отменён",
+      "DELETE быстрее и не может быть отменён; TRUNCATE медленнее, но может быть отменён",
+      "DELETE удаляет только метаданные таблицы; TRUNCATE удаляет данные и метаданные"
     ],
     correct: 1,
-    explanation: "Временные таблицы в функциях запрещены. Табличные переменные (@var TABLE) - разрешены."
+    explanation: "DELETE: построчно, логируется, можно ROLLBACK. TRUNCATE: быстро, минимум лога, по сути нельзя откатить."
   },
+  // Wayground #22: INSERT с подзапросом SELECT
+  {
+    topic: "DML. Данные",
+    question: "Можно ли INSERT с подзапросом в части SELECT?",
+    options: [
+      "Да, но только при отсутствии WHERE",
+      "Нет, INSERT допускает только VALUES (...)",
+      "Да, например: INSERT INTO NewTable SELECT * FROM OldTable WHERE ...;",
+      "Да, но только с оператором UNION ALL"
+    ],
+    correct: 2,
+    explanation: "INSERT INTO ... SELECT - стандартная форма для копирования/массовой вставки данных."
+  },
+
+  // ==================== ПОЛЬЗОВАТЕЛЬСКИЕ ФУНКЦИИ ====================
   {
     topic: "Пользовательские функции",
     question: "Вызов скалярной пользовательской функции в SELECT?",
@@ -938,38 +910,84 @@ const QUESTIONS = [
     correct: 1,
     explanation: "MULTI-STATEMENT: RETURNS @table_var TABLE (col1 type1, ...). INLINE: просто RETURNS TABLE."
   },
+  // Wayground #2: скалярная функция - INSERT в таблицу
   {
     topic: "Пользовательские функции",
-    question: "Максимальный уровень вложенности функций?",
-    options: ["8", "16", "32", "64"],
+    question: "Можно ли в скалярной функции выполнять INSERT в обычную таблицу?",
+    options: [
+      "Да, но только в tempdb",
+      "Да, если есть транзакция",
+      "Нет",
+      "Можно, если включён NOCOUNT"
+    ],
     correct: 2,
-    explanation: "Вложенность функций: до 32 уровней."
+    explanation: "Скалярные функции не могут иметь побочных эффектов. INSERT/UPDATE/DELETE в обычные таблицы запрещены."
+  },
+  // Wayground #13: Inline TVF синтаксис
+  {
+    topic: "Пользовательские функции",
+    question: "Синтаксис объявления Inline-функции, возвращающей таблицу?",
+    options: [
+      "DEFINE FUNCTION ... RETURN TABLE SELECT ...",
+      "CREATE PROCEDURE ... RETURNS TABLE AS SELECT ...",
+      "CREATE FUNCTION ... RETURNS TABLE AS RETURN (SELECT ...)",
+      "CREATE FUNCTION ... RETURNS INT AS BEGIN ... END"
+    ],
+    correct: 2,
+    explanation: "Inline TVF: CREATE FUNCTION fn() RETURNS TABLE AS RETURN (SELECT ...). Одно выражение в RETURN."
+  },
+  // Wayground #17: как вернуть значение из функции
+  {
+    topic: "Пользовательские функции",
+    question: "Как вернуть значение из функции?",
+    options: [
+      "Через PRINT",
+      "В скалярной функции через RETURN; в табличной возвращается таблица, определённая в теле функции",
+      "Только через SELECT внутри функции",
+      "Всегда через OUTPUT-параметр"
+    ],
+    correct: 1,
+    explanation: "Скалярная: RETURN <значение>. Табличная: тело наполняет таблицу-результат."
+  },
+  // Wayground #19: BEGIN...END в multi-statement TVF
+  {
+    topic: "Пользовательские функции",
+    question: "Блок BEGIN...END в многооператорной табличной функции - обязателен?",
+    options: [
+      "Нет, запрещено стандартом",
+      "Да, это обязательно",
+      "Только внутри триггеров",
+      "Только при использовании TRY...CATCH"
+    ],
+    correct: 1,
+    explanation: "Multi-statement TVF требует тело BEGIN...END между AS и RETURN."
+  },
+  // Wayground #27: какая функция возвращает таблицу
+  {
+    topic: "Пользовательские функции",
+    question: "Какая из функций может возвращать табличное значение?",
+    options: [
+      "Скалярная функция",
+      "Многооператорная табличная функция (Multi-statement TVF)",
+      "Обе: Multi-statement TVF и Inline TVF",
+      "Встраиваемая табличная функция (Inline TVF)"
+    ],
+    correct: 2,
+    explanation: "Обе табличные функции - Multi-statement TVF и Inline TVF - возвращают таблицу. Скалярная - одно значение."
   },
 
-  // ==================== ХРАНИМЫЕ ПРОЦЕДУРЫ (6 вопросов) ====================
+  // ==================== ХРАНИМЫЕ ПРОЦЕДУРЫ ====================
   {
     topic: "Хранимые процедуры",
-    question: "Как запустить хранимую процедуру?",
+    question: "Как использовать значение по умолчанию параметра при вызове?",
     options: [
-      "RUN procedure_name",
-      "CALL procedure_name",
-      "EXECUTE procedure_name (или EXEC)",
-      "START procedure_name"
+      "Просто не передавать параметр",
+      "Передать NULL",
+      "Указать ключевое слово DEFAULT",
+      "Передать пустую строку"
     ],
     correct: 2,
-    explanation: "EXECUTE (EXEC) запускает процедуру. Без EXEC - только если первая инструкция в пакете."
-  },
-  {
-    topic: "Хранимые процедуры",
-    question: "Как передать OUTPUT-параметр при вызове процедуры?",
-    options: [
-      "EXEC proc_name @param = @var",
-      "EXEC proc_name @var OUT",
-      "EXEC proc_name @param = @var OUTPUT",
-      "EXEC proc_name RETURN @var"
-    ],
-    correct: 2,
-    explanation: "Для выходных параметров: EXEC proc @param = @var OUTPUT."
+    explanation: "Для значения по умолчанию: EXEC proc @param = DEFAULT."
   },
   {
     topic: "Хранимые процедуры",
@@ -995,57 +1013,53 @@ const QUESTIONS = [
     correct: 1,
     explanation: "sp_ - системные процедуры. SQL Server ищет в master первым, снижается производительность."
   },
+  // Wayground #8: OUTPUT-параметр - для чего
   {
     topic: "Хранимые процедуры",
-    question: "Как использовать значение по умолчанию параметра при вызове?",
+    question: "Для чего используется параметр OUTPUT в хранимой процедуре?",
     options: [
-      "Просто не передавать параметр",
-      "Передать NULL",
-      "Указать ключевое слово DEFAULT",
-      "Передать пустую строку"
+      "Для логирования выполнения процедуры",
+      "Для передачи значения в процедуру",
+      "Для возврата значения из процедуры во внешний код",
+      "Для указания, что параметр является необязательным"
     ],
     correct: 2,
-    explanation: "Для значения по умолчанию: EXEC proc @param = DEFAULT."
+    explanation: "OUTPUT-параметр возвращает значение вызывающему коду после выполнения процедуры."
   },
+  // Wayground #11: объявить OUTPUT-параметр в процедуре
   {
     topic: "Хранимые процедуры",
-    question: "Максимум параметров в хранимой процедуре?",
-    options: ["100", "1000", "2100", "Без ограничений"],
-    correct: 2,
-    explanation: "Хранимая процедура: до 2100 параметров."
+    question: "Как объявить выходной параметр в хранимой процедуре?",
+    options: [
+      "DECLARE @param OUTPUT",
+      "RETURN @param",
+      "SET @param OUTPUT",
+      "@param DataType OUTPUT в заголовке процедуры"
+    ],
+    correct: 3,
+    explanation: "OUTPUT указывается в сигнатуре процедуры: CREATE PROC p (@x INT OUTPUT) AS ..."
+  },
+  // Wayground #25: преимущество хранимых процедур
+  {
+    topic: "Хранимые процедуры",
+    question: "Основное преимущество хранимых процедур vs обычные запросы?",
+    options: [
+      "Они не могут содержать операторы DML",
+      "Они не могут принимать параметры",
+      "Они всегда возвращают табличные значения",
+      "Компилируются один раз и хранятся в кеше, что повышает производительность"
+    ],
+    correct: 3,
+    explanation: "Кеширование плана выполнения: процедура компилируется при первом вызове, потом план переиспользуется."
   },
 
-  // ==================== ТРИГГЕРЫ (6 вопросов) ====================
+  // ==================== ТРИГГЕРЫ ====================
   {
     topic: "Триггеры",
     question: "Виртуальная таблица с новыми значениями строк внутри триггера?",
     options: ["UPDATED", "NEW", "MODIFIED", "INSERTED"],
     correct: 3,
     explanation: "MS SQL Server: INSERTED (новые значения) и DELETED (старые)."
-  },
-  {
-    topic: "Триггеры",
-    question: "Несколько триггеров на одно событие одной таблицы - можно?",
-    options: [
-      "Нет, только один на событие",
-      "Только два",
-      "Да, можно несколько AFTER-триггеров",
-      "Только с FOR EACH ROW"
-    ],
-    correct: 2,
-    explanation: "Несколько AFTER-триггеров на одно событие - можно. INSTEAD OF - только один."
-  },
-  {
-    topic: "Триггеры",
-    question: "Активирует ли TRUNCATE TABLE триггер DELETE?",
-    options: [
-      "Да, всегда",
-      "Только если помечен как TRUNCATE-safe",
-      "Нет, TRUNCATE не активирует триггер",
-      "Только AFTER-триггеры"
-    ],
-    correct: 2,
-    explanation: "TRUNCATE TABLE не активирует триггер DELETE."
   },
   {
     topic: "Триггеры",
@@ -1061,18 +1075,6 @@ const QUESTIONS = [
   },
   {
     topic: "Триггеры",
-    question: "Отличие AFTER-триггера от INSTEAD OF?",
-    options: [
-      "AFTER до операции, INSTEAD OF после",
-      "AFTER после успешной операции, INSTEAD OF вместо неё",
-      "INSTEAD OF быстрее AFTER",
-      "AFTER для VIEW, INSTEAD OF только для таблиц"
-    ],
-    correct: 1,
-    explanation: "AFTER (FOR) - после успешной операции. INSTEAD OF - вместо неё, переопределяет поведение."
-  },
-  {
-    topic: "Триггеры",
     question: "Как отключить триггер без удаления?",
     options: [
       "DROP TRIGGER trigger_name",
@@ -1083,8 +1085,42 @@ const QUESTIONS = [
     correct: 2,
     explanation: "DISABLE TRIGGER - отключить. ENABLE TRIGGER - включить. DROP - удалить навсегда."
   },
+  // Wayground #4: где создаётся триггер
+  {
+    topic: "Триггеры",
+    question: "Где создаётся (определяется) триггер?",
+    options: [
+      "Внутри хранимой процедуры",
+      "Внутри пользовательской функции",
+      "Как отдельный объект, привязанный к таблице или представлению",
+      "В системном реестре SQL Server"
+    ],
+    correct: 2,
+    explanation: "Триггер - отдельный объект схемы, привязывается к таблице/View через CREATE TRIGGER ... ON table."
+  },
+  // Wayground #7: INSTEAD OF триггер
+  {
+    topic: "Триггеры",
+    question: "Что означает INSTEAD OF триггер?",
+    options: [
+      "Он выполняется после основной операции",
+      "Он выполняется вместо основной операции (INSERT/UPDATE/DELETE)",
+      "Он срабатывает только при возникновении ошибки",
+      "Он выполняется до операции, но не отменяет её"
+    ],
+    correct: 1,
+    explanation: "INSTEAD OF подменяет операцию: исходный INSERT/UPDATE/DELETE не выполняется, выполняется тело триггера."
+  },
+  // Wayground #15: AFTER-триггер - когда срабатывает
+  {
+    topic: "Триггеры",
+    question: "Какой тип триггера срабатывает после выполнения операции DML?",
+    options: ["ON триггер", "INSTEAD OF триггер", "BEFORE триггер", "AFTER триггер"],
+    correct: 3,
+    explanation: "AFTER (или FOR) выполняется после успешного DML. INSTEAD OF подменяет операцию."
+  },
 
-  // ==================== ПРЕДСТАВЛЕНИЯ (4 вопроса) ====================
+  // ==================== ПРЕДСТАВЛЕНИЯ (Views) ====================
   {
     topic: "Представления (Views)",
     question: "Что такое VIEW в MS SQL Server?",
@@ -1109,22 +1145,34 @@ const QUESTIONS = [
     correct: 1,
     explanation: "ORDER BY в VIEW запрещён без TOP в списке выбора."
   },
+  // Wayground #9: View на основе другого View
   {
     topic: "Представления (Views)",
-    question: "Максимум столбцов в представлении?",
-    options: ["256", "512", "1024", "2048"],
+    question: "Можно ли создать представление на основе другого представления?",
+    options: [
+      "Нет, это запрещено",
+      "Можно только в tempdb",
+      "Да",
+      "Только если исходное представление пустое"
+    ],
     correct: 2,
-    explanation: "VIEW: до 1024 столбцов."
+    explanation: "View можно строить поверх другого View (вложенные представления). Глубина ограничена 32 уровнями."
   },
+  // Wayground #23: утверждение о представлениях
   {
     topic: "Представления (Views)",
-    question: "Максимальный уровень вложенности VIEW на основе VIEW?",
-    options: ["8", "16", "32", "64"],
-    correct: 2,
-    explanation: "Вложенность VIEW: до 32 уровней."
+    question: "Какое утверждение о представлениях верно?",
+    options: [
+      "Представления не могут содержать ORDER BY",
+      "Представления могут использоваться для ограничения доступа к столбцам или строкам базовых таблиц",
+      "Представления всегда могут быть обновлены (INSERT, UPDATE, DELETE)",
+      "Представления всегда хранят свои собственные данные"
+    ],
+    correct: 1,
+    explanation: "View - инструмент управления доступом: показывает только нужные столбцы/строки. Своих данных не хранит."
   },
 
-  // ==================== ТРАНЗАКЦИИ (6 вопросов) ====================
+  // ==================== ТРАНЗАКЦИИ ====================
   {
     topic: "Транзакции",
     question: "Расшифровка ACID?",
@@ -1193,7 +1241,7 @@ const QUESTIONS = [
     explanation: "Isolation: промежуточные результаты транзакции не видны другим до её фиксации."
   },
 
-  // ==================== КУРСОРЫ (4 вопроса) ====================
+  // ==================== КУРСОРЫ ====================
   {
     topic: "Курсоры",
     question: "Правильный порядок работы с курсором?",
@@ -1243,7 +1291,7 @@ const QUESTIONS = [
     explanation: "DEALLOCATE: удаляет связь курсора с переменной. Имя можно использовать повторно."
   },
 
-  // ==================== ОКОННЫЕ ФУНКЦИИ (4 вопроса) ====================
+  // ==================== ОКОННЫЕ ФУНКЦИИ ====================
   {
     topic: "Оконные функции",
     question: "ROW_NUMBER() OVER(ORDER BY col) делает?",
@@ -1291,310 +1339,5 @@ const QUESTIONS = [
     ],
     correct: 1,
     explanation: "LAG() - предыдущая строка. LEAD() - следующая. Смещение по умолчанию: 1."
-  },
-
-  // ==================== ВОПРОСЫ ИЗ РЕАЛЬНОГО ТЕСТА WAYGROUND (28 шт) ====================
-  // Эти вопросы вытащены из Wayground-теста преподавателя.
-  // Помечены префиксом "🎯" в topic для фильтрации.
-  {
-    topic: "🎯 Тест",
-    question: "Какой оператор цикла используется в T-SQL?",
-    options: ["LOOP", "FOR EACH", "REPEAT...UNTIL", "WHILE"],
-    correct: 3,
-    explanation: "В T-SQL единственный цикл: WHILE. LOOP/FOR EACH/REPEAT - другие СУБД."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Можно ли в скалярной функции выполнять INSERT в обычную таблицу?",
-    options: [
-      "Да, но только в tempdb",
-      "Да, если есть транзакция",
-      "Нет",
-      "Можно, если включён NOCOUNT"
-    ],
-    correct: 2,
-    explanation: "Скалярные функции не могут иметь побочных эффектов. INSERT/UPDATE/DELETE в обычные таблицы запрещены."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "В чем основное отличие между командами DELETE и TRUNCATE TABLE?",
-    options: [
-      "DELETE работает только с таблицами, TRUNCATE с представлениями.",
-      "DELETE удаляет строки по одной и может быть отменен; TRUNCATE удаляет все строки сразу и не может быть отменен.",
-      "DELETE быстрее и не может быть отменен; TRUNCATE медленнее, но может быть отменен.",
-      "DELETE удаляет только метаданные таблицы; TRUNCATE удаляет данные и метаданные."
-    ],
-    correct: 1,
-    explanation: "DELETE: построчно, логируется, можно ROLLBACK. TRUNCATE: быстро, минимум лога, по сути нельзя откатить."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Где создаётся (определяется) триггер?",
-    options: [
-      "Внутри хранимой процедуры.",
-      "Внутри пользовательской функции.",
-      "Как отдельный объект, привязанный к таблице или представлению.",
-      "В системном реестре SQL Server."
-    ],
-    correct: 2,
-    explanation: "Триггер - отдельный объект схемы, привязывается к таблице/View через CREATE TRIGGER ... ON table."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Для чего используется свойство IDENTITY в столбце таблицы?",
-    options: [
-      "Для указания, что столбец является первичным ключом.",
-      "Для автоматического присвоения уникальных строковых значений.",
-      "Для шифрования данных в столбце.",
-      "Для автоматического присвоения возрастающих числовых значений."
-    ],
-    correct: 3,
-    explanation: "IDENTITY(seed, increment) - автоматический автоинкремент целочисленных значений."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какое свойство SQL Server задают для автоматического создания автоинкрементных значений в столбце?",
-    options: ["IDENTITY", "AUTO_NUMBER", "SEQUENCE", "SERIAL"],
-    correct: 0,
-    explanation: "IDENTITY - MS SQL Server. AUTO_NUMBER не существует, SEQUENCE - отдельный объект, SERIAL - PostgreSQL."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Что означает INSTEAD OF триггер?",
-    options: [
-      "Он выполняется после основной операции.",
-      "Он выполняется вместо основной операции (INSERT/UPDATE/DELETE).",
-      "Он срабатывает только при возникновении ошибки.",
-      "Он выполняется до основной операции, но не отменяет её."
-    ],
-    correct: 1,
-    explanation: "INSTEAD OF подменяет операцию: исходный INSERT/UPDATE/DELETE не выполняется, выполняется тело триггера."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Для чего используется параметр OUTPUT в хранимой процедуре?",
-    options: [
-      "Для логирования выполнения процедуры",
-      "Для передачи значения в процедуру",
-      "Для возврата значения из процедуры во внешний код",
-      "Для указания, что параметр является необязательным"
-    ],
-    correct: 2,
-    explanation: "OUTPUT-параметр возвращает значение вызывающему коду после выполнения процедуры."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Можно ли создать представление на основе другого представления?",
-    options: [
-      "Нет, это запрещено",
-      "Можно только в tempdb",
-      "Да",
-      "Только если исходное представление пустое"
-    ],
-    correct: 2,
-    explanation: "View можно строить поверх другого View (вложенные представления). Глубина ограничена 32 уровнями."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какой синтаксис UPDATE является корректным?",
-    options: [
-      "UPDATE таблица SET столбец = значение WHERE условие",
-      "UPDATE таблица (столбец = значение)",
-      "UPDATE таблица WHERE условие SET столбец = значение",
-      "UPDATE SET столбец = значение FROM таблица WHERE условие отсутствует"
-    ],
-    correct: 0,
-    explanation: "Стандарт: UPDATE <таблица> SET <столбец> = <значение> [WHERE <условие>]."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Как правильно объявить выходной параметр в хранимой процедуре?",
-    options: [
-      "DECLARE @param OUTPUT",
-      "RETURN @param",
-      "SET @param OUTPUT",
-      "@param DataType OUTPUT в заголовке процедуры."
-    ],
-    correct: 3,
-    explanation: "OUTPUT указывается в сигнатуре процедуры: CREATE PROC p (@x INT OUTPUT) AS ..."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Условие вида Salary > ALL (subquery). Что означает > ALL?",
-    options: [
-      "Значение больше хотя бы одного значения подзапроса",
-      "Значение больше среднего набора подзапроса",
-      "Значение больше минимума набора подзапроса",
-      "Значение больше максимума набора подзапроса"
-    ],
-    correct: 3,
-    explanation: "> ALL - больше всех значений из подзапроса, то есть больше максимума."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Каков общий синтаксис объявления INLINE-функции, возвращающей таблицу?",
-    options: [
-      "DEFINE FUNCTION ... RETURN TABLE SELECT ...",
-      "CREATE PROCEDURE ... RETURNS TABLE AS SELECT ...",
-      "CREATE FUNCTION ... RETURNS TABLE AS RETURN (SELECT ...)",
-      "CREATE FUNCTION ... RETURNS INT AS BEGIN ... END"
-    ],
-    correct: 2,
-    explanation: "Inline TVF: CREATE FUNCTION fn() RETURNS TABLE AS RETURN (SELECT ...). Одно выражение в RETURN."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какой оператор используется для выхода из цикла WHILE до его естественного завершения?",
-    options: ["EXIT", "STOP", "RETURN", "BREAK"],
-    correct: 3,
-    explanation: "BREAK прерывает WHILE. CONTINUE переходит к следующей итерации."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какой тип триггера срабатывает после выполнения операции DML?",
-    options: ["ON триггер", "INSTEAD OF триггер", "BEFORE триггер", "AFTER триггер"],
-    correct: 3,
-    explanation: "AFTER (или эквивалент FOR) выполняется после успешного DML. INSTEAD OF подменяет операцию."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Каков корректный синтаксис удаления таблицы с именем Employees?",
-    options: [
-      "TRUNCATE Employees;",
-      "DELETE TABLE Employees;",
-      "DROP TABLE Employees;",
-      "REMOVE TABLE Employees;"
-    ],
-    correct: 2,
-    explanation: "DROP TABLE удаляет таблицу полностью со всеми данными и структурой. TRUNCATE удаляет только строки."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Как вернуть значение из функции?",
-    options: [
-      "Через PRINT",
-      "В скалярной функции через RETURN; в табличной возвращается таблица, определённая в теле функции",
-      "Только через SELECT внутри функции",
-      "Всегда через OUTPUT-параметр"
-    ],
-    correct: 1,
-    explanation: "Скалярная: RETURN <значение>. Табличная: тело наполняет таблицу-результат."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какой оператор лучше подходит для проверки существования строк?",
-    options: ["EXISTS", "COUNT(*)", "IN", "DISTINCT"],
-    correct: 0,
-    explanation: "EXISTS останавливается на первой найденной строке - быстрее, чем COUNT(*) > 0."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Можно ли использовать блок BEGIN ... END в многооператорной табличной функции (MULTI-STATEMENT)?",
-    options: [
-      "Нет, запрещено стандартом",
-      "Да, это обязательно",
-      "Только внутри триггеров",
-      "Только при использовании TRY ... CATCH"
-    ],
-    correct: 1,
-    explanation: "Multi-statement TVF требует тело BEGIN...END между AS и RETURN."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Как объявить переменную в T-SQL?",
-    options: [
-      "DECLARE @myVariable INT;",
-      "VAR myVar INT;",
-      "LET @myVariable AS INT;",
-      "SET VARIABLE @myVariable INT;"
-    ],
-    correct: 0,
-    explanation: "DECLARE @name TYPE [= value]. Затем SET или SELECT для присваивания."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Можно ли удалить функцию или процедуру из базы данных без использования команды DROP?",
-    options: [
-      "Да, если она не используется в других запросах.",
-      "Да, через команду DELETE в системных таблицах.",
-      "Нет, для удаления объектов схемы всегда используется DROP.",
-      "Да, просто очистив её код через ALTER."
-    ],
-    correct: 2,
-    explanation: "Объекты схемы (функции, процедуры, таблицы, представления) удаляются только через DROP."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Можно ли использовать INSERT с подзапросом в части SELECT?",
-    options: [
-      "Да, но только при отсутствии WHERE",
-      "Нет, INSERT допускает только VALUES (...);",
-      "Да, например: INSERT INTO NewTable SELECT * FROM OldTable WHERE ...;",
-      "Да, но только с оператором UNION ALL"
-    ],
-    correct: 2,
-    explanation: "INSERT INTO ... SELECT - стандартная форма для копирования/массовой вставки данных из другого запроса."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какое из утверждений о представлениях верно?",
-    options: [
-      "Представления не могут содержать ORDER BY",
-      "Представления могут использоваться для ограничения доступа к столбцам или строкам базовых таблиц",
-      "Представления всегда могут быть обновлены (INSERT, UPDATE, DELETE)",
-      "Представления всегда хранят свои собственные данные"
-    ],
-    correct: 1,
-    explanation: "View - инструмент управления доступом: можно показать только нужные столбцы/строки. Своих данных не хранит."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Где физически хранятся временные таблицы?",
-    options: [
-      "В базе master",
-      "В памяти сервера и не на диске",
-      "В системной базе tempdb",
-      "В пользовательской базе, где они созданы"
-    ],
-    correct: 2,
-    explanation: "Все временные таблицы (#temp и ##global) физически живут в tempdb."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "В чём одно из основных преимуществ хранимых процедур по сравнению с обычными SQL-запросами?",
-    options: [
-      "Они не могут содержать операторы DML",
-      "Они не могут принимать параметры",
-      "Они всегда возвращают табличные значения",
-      "Они компилируются один раз и хранятся в кеше, что повышает производительность при повторных вызовах"
-    ],
-    correct: 3,
-    explanation: "Кеширование плана выполнения: процедура компилируется при первом вызове, потом план переиспользуется."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какой командой изменяют структуру существующей таблицы?",
-    options: ["UPDATE TABLE", "ALTER TABLE", "CHANGE TABLE", "MODIFY TABLE"],
-    correct: 1,
-    explanation: "ALTER TABLE - изменение структуры (ADD/DROP/ALTER COLUMN). UPDATE меняет данные."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какая из следующих функций может возвращать табличное значение?",
-    options: [
-      "Скалярная функция",
-      "Многооператорная табличная функция (Multi-statement Table-Valued Function)",
-      "Б и В",
-      "Встраиваемая табличная функция (Inline Table-Valued Function)"
-    ],
-    correct: 2,
-    explanation: "Обе табличные функции - Multi-statement TVF и Inline TVF - возвращают таблицу. Скалярная возвращает одно значение."
-  },
-  {
-    topic: "🎯 Тест",
-    question: "Какой оператор применяется для пересечения множеств результатов двух запросов?",
-    options: ["INNER APPLY", "EXCEPT", "INTERSECT", "CROSS JOIN"],
-    correct: 2,
-    explanation: "INTERSECT - пересечение (общие строки). EXCEPT - разность. UNION - объединение."
   }
 ];

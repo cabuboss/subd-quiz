@@ -1,5 +1,5 @@
-const STORAGE_KEY = 'subd-quiz-state-v4';
-const QUIZ_VERSION = 4;
+const STORAGE_KEY = 'subd-quiz-state-v5';
+const QUIZ_VERSION = 5;
 
 let currentIndex = 0;
 let correctCount = 0;
@@ -8,7 +8,7 @@ let answered = [];
 let activeQuestions = [];
 let isFinished = false;
 
-['subd-quiz-state', 'subd-quiz-state-v2', 'subd-quiz-state-v3'].forEach(k => {
+['subd-quiz-state', 'subd-quiz-state-v2', 'subd-quiz-state-v3', 'subd-quiz-state-v4'].forEach(k => {
   try { localStorage.removeItem(k); } catch (e) {}
 });
 
@@ -60,9 +60,8 @@ function shuffleOptions(q) {
   };
 }
 
-function startQuiz(shuffle, examOnly) {
-  const source = examOnly ? QUESTIONS.filter(q => q.topic.startsWith('🎯')) : QUESTIONS;
-  activeQuestions = source.map(shuffleOptions);
+function startQuiz(shuffle) {
+  activeQuestions = QUESTIONS.map(shuffleOptions);
   if (shuffle) {
     for (let i = activeQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
